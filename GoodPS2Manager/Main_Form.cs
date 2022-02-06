@@ -74,6 +74,43 @@ namespace GoodPS2Manager
         {
             LoadOPLFolder(currentPreferences.DefaultOPLPath);
         }
+
+        private void addGamesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var addGameDialog = new CommonOpenFileDialog
+            {
+                Multiselect = true,
+                RestoreDirectory = true,
+                EnsureFileExists = true,
+                EnsurePathExists = true,
+                Title = "Select ISO files to add to the OPL folder"
+            };
+
+            if (addGameDialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                var failedCopies = (from file in addGameDialog.FileNames
+                                    where !loadedOPLStructure.CopyGameToFolder(file)
+                                    select file).ToList();
+
+                if (failedCopies.Count > 0)
+                {
+                    var realSuccessfulCount = addGameDialog.FileNames.Count() - failedCopies.Count;
+
+                    MessageBox.Show($"Issues occured during copy\n" +
+                        $"Successfully copied {realSuccessfulCount} Games\n" +
+                        $"Failed to copy {failedCopies.Count} files\n" +
+                        $"The following files failed {string.Join("\n", failedCopies)}");
+
+                }
+                else
+                {
+                    MessageBox.Show($"Successfully copied {addGameDialog.FileNames.Count()} Games");
+                }
+
+                LoadOPLFolder(loadedOPLStructure.RootFolder);
+            }
+        }
+
         #endregion
 
         #region Helper Methods
@@ -82,13 +119,16 @@ namespace GoodPS2Manager
             try
             {
                 loadedOPLStructure = new OPLFolderStructure(path);
-                OPLStructureLabel.Text = loadedOPLStructure.ToString();
-                FolderStatusLabel.Text = $"Current Folder: {loadedOPLStructure.RootFolder}";
 
                 // We need to clear this before we load anything in or else it'll just duplicate entries
                 GamesListView.Items.Clear();
                 AddGamesToList(loadedOPLStructure.DVD.GamesList);
                 AddGamesToList(loadedOPLStructure.CD.GamesList);
+
+                // Update any other interface elements that need to be changed once the folder is loaded
+                OPLStructureLabel.Text = loadedOPLStructure.ToString();
+                FolderStatusLabel.Text = $"Current Folder: {loadedOPLStructure.RootFolder}";
+                addGamesToolStripMenuItem.Enabled = true;
             }
             catch (Exception e)
             {
@@ -117,5 +157,6 @@ namespace GoodPS2Manager
             }
         }
         #endregion
+
     }
 }

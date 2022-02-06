@@ -16,6 +16,9 @@ namespace GoodPS2Manager
 
         string VolumeLabel { get; set; }
         long Size { get; set; }
+        long Clusters { get; set; }
+        long ClusterSize { get; set; }
+        bool IsCDImage { get; }
 
         void ReadDisc();
         void WriteDisc();
@@ -41,12 +44,18 @@ namespace GoodPS2Manager
 
     public class DiscUtilsImage : IDiscImage
     {
+
+        readonly long CDClusterCount = 333000; // Unfortunately the only way to detect a CD ISO
         public string Path { get; set; }
         public IDiscImage.DiscType Type { get => IDiscImage.DiscType.None; }
         public string VolumeLabel { get; set; }
 
         public DiscContents Contents { get; set; } = new DiscContents();
         public long Size { get; set; }
+
+        public long Clusters { get; set; }
+        public long ClusterSize { get; set; }
+        public bool IsCDImage { get => Clusters < CDClusterCount; }
 
         public DiscUtilsImage(string path)
         {
@@ -66,6 +75,8 @@ namespace GoodPS2Manager
                 CDReader disc = new CDReader(isoStream, true);
                 VolumeLabel = disc.VolumeLabel;
                 Size = isoStream.Length;
+                Clusters = disc.TotalClusters;
+                ClusterSize = disc.ClusterSize;
 
                 if (disc.FileExists(DiscContents.SystemCNFFileName))
                 {

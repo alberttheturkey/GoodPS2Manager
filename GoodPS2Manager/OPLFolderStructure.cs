@@ -52,6 +52,19 @@ namespace GoodPS2Manager
                 $"POPS:{POPS.Path} - {POPS.FolderExists}\n" +
                 $"VMC:{VMC.Path} - {VMC.FolderExists}\n";
         }
+
+        public bool CopyGameToFolder(string path)
+        {
+            bool result = false;
+
+            if (File.Exists(path)) {
+                // We check to see if it's a CD before we move anything
+                File.Copy(path, $"{(new DiscUtilsImage(path).IsCDImage ? CD.Path : DVD.Path)}\\{Path.GetFileName(path)}");
+                result = true;
+            }
+
+            return result;
+        }
     }
 
     public class OPLFolder
