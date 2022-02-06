@@ -87,32 +87,35 @@ namespace GoodPS2Manager
 
                 // We need to clear this before we load anything in or else it'll just duplicate entries
                 GamesListView.Items.Clear();
-
-                // Add in out DVD list 
-                // TODO: add in CD games also
-                foreach (Game game in loadedOPLStructure.DVD.GamesList) {
-                    var size = ByteSize.FromBytes(game.Size);
-                    GamesListView.Items.Add(new ListViewItem(
-                        new string[] { 
-                            game.Name,  
-                            game.Region.ToString(), 
-                            game.Type.ToString(), 
-                            game.ID,
-                            game.VolumeName,
-                            $"{string.Format("{0:0.0}", size.LargestWholeNumberDecimalValue)} {size.LargestWholeNumberDecimalSymbol}"
-                        })
-                    );
-                }
+                AddGamesToList(loadedOPLStructure.DVD.GamesList);
+                AddGamesToList(loadedOPLStructure.CD.GamesList);
             }
-            catch (Exception e){
+            catch (Exception e)
+            {
                 MessageBox.Show($"An error has occured whilst attempting to load OPL Folder. \nError Message:\n{e.Message}", "OPL Load Error");
             }
         }
-        #endregion
 
-        private void GamesListView_SelectedIndexChanged(object sender, EventArgs e)
+        private void AddGamesToList(List<Game> gamesList)
         {
-
+            // LINQ query to add all the games we've been passed into the list
+            foreach (var (game, size) in
+            from Game game in gamesList
+            let size = ByteSize.FromBytes(game.Size)
+            select (game, size))
+            {
+                GamesListView.Items.Add(new ListViewItem(
+                    new string[] {
+                            game.Name,
+                            game.Region.ToString(),
+                            game.Type.ToString(),
+                            game.ID,
+                            game.VolumeName,
+                            $"{string.Format("{0:0.0}", size.LargestWholeNumberDecimalValue)} {size.LargestWholeNumberDecimalSymbol}"
+                    })
+                );
+            }
         }
+        #endregion
     }
 }

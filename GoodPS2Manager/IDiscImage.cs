@@ -10,7 +10,7 @@ namespace GoodPS2Manager
 {
     public interface IDiscImage
     {
-        enum DiscType { DVD, CD }
+        enum DiscType { None, DVD, CD }
         DiscType Type { get; }
         string Path { get; set; }
 
@@ -21,39 +21,34 @@ namespace GoodPS2Manager
         void WriteDisc();
     }
 
-    //public class DiscUtilsCDImage : IDiscImage
-    //{
-    //    public string Path { get; set; }
-    //    public IDiscImage.DiscType Type { get => IDiscImage.DiscType.CD; }
-    //    public string VolumeLabel { get; set; }
+    public class DiscUtilsCDImage : DiscUtilsImage
+    {
+        public new IDiscImage.DiscType Type { get => IDiscImage.DiscType.CD; }
+        public DiscUtilsCDImage(string path) : base(path)
+        {
 
-    //    public DiscUtilsCDImage(string path)
-    //    {
-    //        Path = path;
-    //        ReadDisc();
-    //    }
+        }
+    }
 
-    //    public void ReadDisc()
-    //    {
-    //        throw new NotImplementedException();
-    //    }
+    public class DiscUtilsDVDImage : DiscUtilsImage
+    {
+        public new IDiscImage.DiscType Type { get => IDiscImage.DiscType.DVD; }
+        public DiscUtilsDVDImage(string path) : base(path)
+        {
 
-    //    public void WriteDisc()
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
+        }
+    }
 
-    public class DiscUtilsDVDImage : IDiscImage
+    public class DiscUtilsImage : IDiscImage
     {
         public string Path { get; set; }
-        public IDiscImage.DiscType Type { get => IDiscImage.DiscType.DVD; }
+        public IDiscImage.DiscType Type { get => IDiscImage.DiscType.None; }
         public string VolumeLabel { get; set; }
 
         public DiscContents Contents { get; set; } = new DiscContents();
         public long Size { get; set; }
 
-        public DiscUtilsDVDImage(string path)
+        public DiscUtilsImage(string path)
         {
             Path = path;
             ReadDisc();

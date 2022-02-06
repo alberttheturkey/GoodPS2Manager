@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace GoodPS2Manager
 {
@@ -12,10 +11,10 @@ namespace GoodPS2Manager
         public string RootFolder { get; set; }
         public OPLFolder APPS { get; set; }
         public OPLFolder ART { get; set; }
-        public OPLFolder CD { get; set; }
+        public GamesFolder CD { get; set; }
         public OPLFolder CFG { get; set; }
         public OPLFolder CHT { get; set; }
-        public DVDFolder DVD { get; set; }
+        public GamesFolder DVD { get; set; }
         public OPLFolder POPS { get; set; }
         public OPLFolder VMC { get; set; }
 
@@ -33,10 +32,10 @@ namespace GoodPS2Manager
         {
             APPS = new OPLFolder($"{RootFolder}\\APPS");
             ART = new OPLFolder($"{RootFolder}\\ART");
-            CD = new OPLFolder($"{RootFolder}\\CD");
+            CD = new GamesFolder($"{RootFolder}\\CD", GamesFolder.GameFolderType.CD);
             CFG = new OPLFolder($"{RootFolder}\\CFG");
             CHT = new OPLFolder($"{RootFolder}\\CHT");
-            DVD = new DVDFolder($"{RootFolder}\\DVD");
+            DVD = new GamesFolder($"{RootFolder}\\DVD", GamesFolder.GameFolderType.DVD);
             POPS = new OPLFolder($"{RootFolder}\\POPS");
             VMC = new OPLFolder($"{RootFolder}\\VMC");
         }
@@ -73,14 +72,17 @@ namespace GoodPS2Manager
         }
     }
 
-    public class DVDFolder : OPLFolder
+    public class GamesFolder : OPLFolder
     {
         // Add DVD extension types here, make sure extension types are LOWER CASE
-        public static List<string> DVDImageExtensions = new List<string> { "iso" };
+        public static List<string> ImageExtensions = new List<string> { "iso" };
         public List<Game> GamesList { get; set; } = new List<Game>();
+        public enum GameFolderType { None, DVD, CD }
+        public GameFolderType FolderType;
 
-        public DVDFolder(string path) : base(path)
+        public GamesFolder(string path, GameFolderType folderType) : base(path)
         {
+            FolderType = folderType;
             PopulateGamesList();
         }
 
@@ -90,20 +92,36 @@ namespace GoodPS2Manager
             // Uses EnumerateFiles for performance benefits
             var dvdFiles = Directory.EnumerateFiles(Path, "*.*", SearchOption.AllDirectories)
                 .Where(s =>
-                    DVDImageExtensions.Contains(
+                    ImageExtensions.Contains(
                         System.IO.Path.GetExtension(s).TrimStart('.').ToLowerInvariant()
                         )
                     );
 
+            // Set our game type based on folder, right now Dual Layer DVD's can't be detected
+            // When it's possible to test dual layers this will need to be moved into the game
+            // ISO reading logic
+            var gameType = Game.GameType.None;
+
+            switch(FolderType)
+            {
+                case GameFolderType.CD:
+                    gameType = Game.GameType.CD;
+                    break;
+                case GameFolderType.DVD:
+                    gameType = Game.GameType.DVD5;
+                    break;
+            }
+
             foreach (var dvdFilePath in dvdFiles)
             {
-                GamesList.Add(new Game(dvdFilePath));
+
+                GamesList.Add(new Game(dvdFilePath, gameType));
             }
         }
     }
     public class Game
     {
-        public enum GameType { DVD5, DVD9, CD }
+        public enum GameType { None, DVD5, DVD9, CD }
         public GameType Type { get; set; }
         public SystemConfig.VideoMode Region { get; set; }
         public string Name { get; set; }
@@ -111,15 +129,19 @@ namespace GoodPS2Manager
         public string VolumeName { get; set; }
         public long Size { get; set; }
 
-        public Game(string path)
+        public Game(string path, GameType type)
         {
+            // Some items can be inferred without the image
+            Name = Path.GetFileNameWithoutExtension(path);
+            Type = type;
+
             GetGameFromPath(path);
         }
 
         private void GetGameFromPath(string path)
         {
             // Create a DVD image object to get the game information from
-            var image = new DiscUtilsDVDImage(path)
+            var image = new DiscUtilsImage(path)
             {
                 Path = path
             };
@@ -130,10 +152,6 @@ namespace GoodPS2Manager
             Region = image.Contents.SystemConfig.VMODE;
             VolumeName = image.VolumeLabel;
             Size = image.Size;
-
-            // Some items can be inferred without the image
-            Name = Path.GetFileNameWithoutExtension(path);
-            Type = GameType.DVD5;
         }
 
     }
