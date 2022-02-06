@@ -10,7 +10,7 @@ namespace GoodPS2Manager
 {
     public interface IDiscImage
     {
-        enum DiscType { DVD, CD }
+        enum DiscType { None, DVD, CD }
         DiscType Type { get; }
         string Path { get; set; }
 

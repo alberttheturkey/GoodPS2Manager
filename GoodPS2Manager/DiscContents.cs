@@ -24,7 +24,7 @@ namespace GoodPS2Manager
         public const string BootParameter = "BOOT2";
         public const string VersionParameter = "VER";
         public const string VideoModeParameter = "VMODE";
-        public enum VideoMode { PAL, NTSC }
+        public enum VideoMode { None, PAL, NTSC, NTSCJ }
         public VideoMode VMODE { get; set; }
         public string BOOT2 { get; set; }
         public string VER { get; set; }
@@ -62,7 +62,24 @@ namespace GoodPS2Manager
 
             if (thirdLine.StartsWith(VideoModeParameter))
             {
-                VMODE = thirdLine.Trim().EndsWith(VideoMode.NTSC.ToString()) ? VideoMode.NTSC : VideoMode.PAL;
+
+                if (thirdLine.Trim().EndsWith(VideoMode.NTSC.ToString()))
+                {
+                    VMODE = VideoMode.NTSC;
+                }
+                else if (thirdLine.Trim().EndsWith(VideoMode.PAL.ToString()))
+                {
+                    VMODE = VideoMode.PAL;
+                }
+                else if (thirdLine.Trim().EndsWith("NTSC-J")) // Enums won't let me do -'s grumble grumble
+                {
+                    VMODE = VideoMode.NTSCJ;
+                }
+                else
+                {
+                    VMODE = VideoMode.None; // This shouldn't happen
+                }
+
             }
         }
     }

@@ -103,7 +103,7 @@ namespace GoodPS2Manager
     }
     public class Game
     {
-        public enum GameType { DVD5, DVD9, CD }
+        public enum GameType { None, DVD5, DVD9, CD }
         public GameType Type { get; set; }
         public SystemConfig.VideoMode Region { get; set; }
         public string Name { get; set; }

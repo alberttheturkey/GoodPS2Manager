@@ -21,8 +21,7 @@ namespace GoodPS2Manager
 
         public bool ValidatePreferences()
         {
-            bool preferencesValid = false;
-            preferencesValid = Path.IsPathRooted(DefaultOPLPath);
+            bool preferencesValid = Path.IsPathRooted(DefaultOPLPath);
             return preferencesValid;
         }
     }
