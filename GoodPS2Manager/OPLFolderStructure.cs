@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace GoodPS2Manager
 {
@@ -53,8 +54,18 @@ namespace GoodPS2Manager
                 $"VMC:{VMC.Path} - {VMC.FolderExists}\n";
         }
 
-        public bool CopyGameToFolder(string path)
+        public bool CopyGameToFolder(string path, IProgress<int> progress, CancellationToken cancellationToken)
         {
+            // Cancel the operation if signal is sent
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+            }
+            catch
+            {
+                throw;
+            }
+
             bool result = false;
 
             if (File.Exists(path)) {
@@ -62,6 +73,7 @@ namespace GoodPS2Manager
                 File.Copy(path, $"{(new DiscUtilsImage(path).IsCDImage ? CD.Path : DVD.Path)}\\{Path.GetFileName(path)}");
                 result = true;
             }
+            progress.Report(1);
 
             return result;
         }

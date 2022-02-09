@@ -75,40 +75,10 @@ namespace GoodPS2Manager
             LoadOPLFolder(currentPreferences.DefaultOPLPath);
         }
 
-        private void addGamesToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void addGamesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var addGameDialog = new CommonOpenFileDialog
-            {
-                Multiselect = true,
-                RestoreDirectory = true,
-                EnsureFileExists = true,
-                EnsurePathExists = true,
-                Title = "Select ISO files to add to the OPL folder"
-            };
-
-            if (addGameDialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                var failedCopies = (from file in addGameDialog.FileNames
-                                    where !loadedOPLStructure.CopyGameToFolder(file)
-                                    select file).ToList();
-
-                if (failedCopies.Count > 0)
-                {
-                    var realSuccessfulCount = addGameDialog.FileNames.Count() - failedCopies.Count;
-
-                    MessageBox.Show($"Issues occured during copy\n" +
-                        $"Successfully copied {realSuccessfulCount} Games\n" +
-                        $"Failed to copy {failedCopies.Count} files\n" +
-                        $"The following files failed {string.Join("\n", failedCopies)}");
-
-                }
-                else
-                {
-                    MessageBox.Show($"Successfully copied {addGameDialog.FileNames.Count()} Games");
-                }
-
-                LoadOPLFolder(loadedOPLStructure.RootFolder);
-            }
+            var copyDialog = new CopyDialog(loadedOPLStructure,MainProgressBar, ProgressPercentageLabel);
+            copyDialog.ShowDialog();
         }
 
         #endregion
