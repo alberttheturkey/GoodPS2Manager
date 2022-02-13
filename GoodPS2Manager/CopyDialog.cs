@@ -26,6 +26,8 @@ namespace GoodPS2Manager
             Title = "Select ISO files to add to the OPL folder"
         };
 
+        List<CopyModel> copyJobs = new List<CopyModel>();
+
         private CancellationTokenSource _cts;
 
         List<string> selectedImages = new List<string>();
@@ -46,7 +48,13 @@ namespace GoodPS2Manager
 
                 foreach (string imageFilePath in selectedImages)
                 {
-                    GameCopyList.Items.Add(imageFilePath);
+                    copyJobs.Add(new CopyModel
+                    {
+                        Source = imageFilePath,
+                        Status = "Ready To Copy",
+                        Progress = 0
+                    });
+                    objectListView1.SetObjects(copyJobs);
                 }
 
                 // Enable the copy button because we can't if items have been added/removed from the listbox without trouble
@@ -152,5 +160,17 @@ namespace GoodPS2Manager
                 RemoveImagesButton.Enabled = false;
             }
         }
+
+        private void CopyDialog_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
+
+    public class CopyModel
+    {
+        public string Source { get; set; }
+        public string Status { get; set; }
+        public int Progress { get; set; }
     }
 }
