@@ -12,7 +12,8 @@ namespace GoodPS2Manager
     public class Preferences
     {
         public string DefaultOPLPath { get; set; } = "d:\\OPL";
-        public bool LoadOPLFolderOnStartup { get; set; }
+        public bool LoadOPLFolderOnStartup { get; set; } = false;
+        public bool CheckOPLFolderOnLoad { get; set; } = true;
 
         public Preferences()
         {

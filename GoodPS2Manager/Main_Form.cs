@@ -30,7 +30,7 @@ namespace GoodPS2Manager
             currentPreferences = Properties.Settings.Default.Preferences;
             
             // only load OPL folder on startup
-            if (currentPreferences.LoadOPLFolderOnStartup)
+            if (currentPreferences != null && currentPreferences.LoadOPLFolderOnStartup)
             {
                 LoadOPLFolder(currentPreferences.DefaultOPLPath);
             }
@@ -61,7 +61,7 @@ namespace GoodPS2Manager
         {
             var folderDialog = new CommonOpenFileDialog
             {
-                InitialDirectory = currentPreferences.DefaultOPLPath,
+                InitialDirectory = currentPreferences?.DefaultOPLPath ?? null,
                 IsFolderPicker = true
             };
 
@@ -77,18 +77,28 @@ namespace GoodPS2Manager
         #endregion
 
         #region Helper Methods
-        public void LoadOPLFolder(string path)
+        public void LoadOPLFolder(string path, bool createFolder = false)
         {
             try
             {
-                loadedOPLStructure = new OPLFolderStructure(path);
-                OPLStructureLabel.Text = loadedOPLStructure.ToString();
-                FolderStatusLabel.Text = $"Current Folder: {loadedOPLStructure.RootFolder}";
+                loadedOPLStructure = new OPLFolderStructure(path, createFolder);
+
+                if (loadedOPLStructure.MissingFolders && currentPreferences.CheckOPLFolderOnLoad && !createFolder)
+                {
+                    if(MessageBox.Show("This OPL folder is missing some folders, Do you want to add them?", "OPL Structure Missing Folders", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        loadedOPLStructure.CreateMissingOPLFolders();
+                    }
+                }
 
                 // We need to clear this before we load anything in or else it'll just duplicate entries
                 GamesListView.Items.Clear();
                 AddGamesToList(loadedOPLStructure.DVD.GamesList);
                 AddGamesToList(loadedOPLStructure.CD.GamesList);
+
+                // Update any other interface elements that need to be changed once the folder is loaded
+                OPLStructureLabel.Text = loadedOPLStructure.ToString();
+                FolderStatusLabel.Text = $"Current Folder: {loadedOPLStructure.RootFolder}";
             }
             catch (Exception e)
             {
@@ -117,5 +127,34 @@ namespace GoodPS2Manager
             }
         }
         #endregion
+
+        private void createOPLFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var folderDialog = new CommonOpenFileDialog
+            {
+                IsFolderPicker = true,
+                EnsurePathExists = false,
+                EnsureFileExists = false,
+                EnsureValidNames = false,
+            };
+
+            if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                LoadOPLFolder(folderDialog.FileName, true);
+                
+                if (!loadedOPLStructure.FolderExists)
+                {
+                    MessageBox.Show("OPL folder creation failed");
+                }
+                else if (loadedOPLStructure.MissingFolders)
+                {
+                    MessageBox.Show("OPL folder created but folders are missing");
+                }
+                else
+                {
+                    MessageBox.Show("OPL folder successfully created");
+                }
+            }
+        }
     }
 }
