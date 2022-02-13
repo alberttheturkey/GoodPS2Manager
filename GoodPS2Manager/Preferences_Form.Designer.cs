@@ -36,24 +36,25 @@
             this.CancelPreferenceButton = new System.Windows.Forms.Button();
             this.LoadOPLOnStartupCheckbox = new System.Windows.Forms.CheckBox();
             this.PreferencesToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.CheckOPLFolderCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // DefaultOPLPathTextbox
             // 
-            this.DefaultOPLPathTextbox.Location = new System.Drawing.Point(109, 4);
+            this.DefaultOPLPathTextbox.Location = new System.Drawing.Point(257, 53);
             this.DefaultOPLPathTextbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.DefaultOPLPathTextbox.Name = "DefaultOPLPathTextbox";
-            this.DefaultOPLPathTextbox.Size = new System.Drawing.Size(275, 20);
+            this.DefaultOPLPathTextbox.Size = new System.Drawing.Size(354, 20);
             this.DefaultOPLPathTextbox.TabIndex = 0;
             this.PreferencesToolTip.SetToolTip(this.DefaultOPLPathTextbox, "This is the default OPL Folder to load on startup");
             this.DefaultOPLPathTextbox.TextChanged += new System.EventHandler(this.DefaultOPLPathTextbox_TextChanged);
             // 
             // OPLFolderBrowseButton
             // 
-            this.OPLFolderBrowseButton.Location = new System.Drawing.Point(387, 4);
+            this.OPLFolderBrowseButton.Location = new System.Drawing.Point(613, 49);
             this.OPLFolderBrowseButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.OPLFolderBrowseButton.Name = "OPLFolderBrowseButton";
-            this.OPLFolderBrowseButton.Size = new System.Drawing.Size(106, 25);
+            this.OPLFolderBrowseButton.Size = new System.Drawing.Size(100, 26);
             this.OPLFolderBrowseButton.TabIndex = 1;
             this.OPLFolderBrowseButton.Text = "Browse";
             this.OPLFolderBrowseButton.UseVisualStyleBackColor = true;
@@ -62,7 +63,7 @@
             // DefaultOPLFolderLabel
             // 
             this.DefaultOPLFolderLabel.AutoSize = true;
-            this.DefaultOPLFolderLabel.Location = new System.Drawing.Point(8, 6);
+            this.DefaultOPLFolderLabel.Location = new System.Drawing.Point(156, 53);
             this.DefaultOPLFolderLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.DefaultOPLFolderLabel.Name = "DefaultOPLFolderLabel";
             this.DefaultOPLFolderLabel.Size = new System.Drawing.Size(97, 13);
@@ -71,10 +72,10 @@
             // 
             // SavePreferencesButton
             // 
-            this.SavePreferencesButton.Location = new System.Drawing.Point(526, 408);
+            this.SavePreferencesButton.Location = new System.Drawing.Point(509, 408);
             this.SavePreferencesButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.SavePreferencesButton.Name = "SavePreferencesButton";
-            this.SavePreferencesButton.Size = new System.Drawing.Size(91, 27);
+            this.SavePreferencesButton.Size = new System.Drawing.Size(100, 26);
             this.SavePreferencesButton.TabIndex = 4;
             this.SavePreferencesButton.Text = "Save";
             this.SavePreferencesButton.UseVisualStyleBackColor = true;
@@ -82,10 +83,10 @@
             // 
             // CancelPreferenceButton
             // 
-            this.CancelPreferenceButton.Location = new System.Drawing.Point(621, 408);
+            this.CancelPreferenceButton.Location = new System.Drawing.Point(613, 408);
             this.CancelPreferenceButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.CancelPreferenceButton.Name = "CancelPreferenceButton";
-            this.CancelPreferenceButton.Size = new System.Drawing.Size(91, 27);
+            this.CancelPreferenceButton.Size = new System.Drawing.Size(100, 26);
             this.CancelPreferenceButton.TabIndex = 5;
             this.CancelPreferenceButton.Text = "Cancel";
             this.CancelPreferenceButton.UseVisualStyleBackColor = true;
@@ -94,7 +95,7 @@
             // LoadOPLOnStartupCheckbox
             // 
             this.LoadOPLOnStartupCheckbox.AutoSize = true;
-            this.LoadOPLOnStartupCheckbox.Location = new System.Drawing.Point(18, 49);
+            this.LoadOPLOnStartupCheckbox.Location = new System.Drawing.Point(257, 83);
             this.LoadOPLOnStartupCheckbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.LoadOPLOnStartupCheckbox.Name = "LoadOPLOnStartupCheckbox";
             this.LoadOPLOnStartupCheckbox.Size = new System.Drawing.Size(156, 17);
@@ -109,11 +110,28 @@
             // 
             this.PreferencesToolTip.OwnerDraw = true;
             // 
+            // CheckOPLFolderCheckBox
+            // 
+            this.CheckOPLFolderCheckBox.AutoSize = true;
+            this.CheckOPLFolderCheckBox.Checked = true;
+            this.CheckOPLFolderCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CheckOPLFolderCheckBox.Location = new System.Drawing.Point(257, 104);
+            this.CheckOPLFolderCheckBox.Margin = new System.Windows.Forms.Padding(2);
+            this.CheckOPLFolderCheckBox.Name = "CheckOPLFolderCheckBox";
+            this.CheckOPLFolderCheckBox.Size = new System.Drawing.Size(234, 17);
+            this.CheckOPLFolderCheckBox.TabIndex = 7;
+            this.CheckOPLFolderCheckBox.Text = "Check OPL folder for missing folders on load";
+            this.PreferencesToolTip.SetToolTip(this.CheckOPLFolderCheckBox, "Check this box to have Good PS2 Manager load the above specified OPL Folder on st" +
+        "artup");
+            this.CheckOPLFolderCheckBox.UseVisualStyleBackColor = true;
+            this.CheckOPLFolderCheckBox.CheckedChanged += new System.EventHandler(this.CheckOPLFolderCheckBox_CheckedChanged);
+            // 
             // Preferences_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(721, 442);
+            this.Controls.Add(this.CheckOPLFolderCheckBox);
             this.Controls.Add(this.LoadOPLOnStartupCheckbox);
             this.Controls.Add(this.CancelPreferenceButton);
             this.Controls.Add(this.SavePreferencesButton);
@@ -139,5 +157,6 @@
         private System.Windows.Forms.Button CancelPreferenceButton;
         private System.Windows.Forms.ToolTip PreferencesToolTip;
         private System.Windows.Forms.CheckBox LoadOPLOnStartupCheckbox;
+        private System.Windows.Forms.CheckBox CheckOPLFolderCheckBox;
     }
 }
