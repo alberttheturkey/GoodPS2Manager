@@ -20,9 +20,10 @@ namespace GoodPS2Manager
         {
             InitializeComponent();
 
-            pendingPreferences = preferencesToLoad;
+            pendingPreferences = preferencesToLoad ?? new Preferences();
             DefaultOPLPathTextbox.Text = pendingPreferences.DefaultOPLPath;
             LoadOPLOnStartupCheckbox.Checked = pendingPreferences.LoadOPLFolderOnStartup;
+            CheckOPLFolderCheckBox.Checked = pendingPreferences.CheckOPLFolderOnLoad;
         }
 
         #region Dialog Close Methods
@@ -100,6 +101,10 @@ namespace GoodPS2Manager
         private void LoadOPLOnStartupCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             pendingPreferences.LoadOPLFolderOnStartup = ((CheckBox)sender).Checked;
+        }
+        private void CheckOPLFolderCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            pendingPreferences.CheckOPLFolderOnLoad = ((CheckBox)sender).Checked;
         }
         #endregion
 

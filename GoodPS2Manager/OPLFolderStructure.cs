@@ -18,15 +18,44 @@ namespace GoodPS2Manager
         public GamesFolder DVD { get; set; }
         public OPLFolder POPS { get; set; }
         public OPLFolder VMC { get; set; }
-
-        public OPLFolderStructure(string path)
-        {
-            if (!Directory.Exists(path))
+        public bool MissingFolders { 
+            get 
             {
-                throw new Exception($"OPL Directory \"{path}\" doesn't exist");
-            }
+                return !APPS.FolderExists || !ART.FolderExists || !CD.FolderExists // If none of the folders exists then 
+                    || !CFG.FolderExists || !CHT.FolderExists || !DVD.FolderExists
+                    || !DVD.FolderExists || !POPS.FolderExists || !VMC.FolderExists;
+            } 
+        }
+
+        public bool FolderExists { 
+            get
+            {
+                return Directory.Exists(RootFolder);
+            } 
+        }
+        
+        public OPLFolderStructure(string path, bool createFolder = false)
+        {            
             RootFolder = path;
+
+            if (!Directory.Exists(RootFolder))
+            {
+                if (createFolder)
+                {
+                    Directory.CreateDirectory(RootFolder);
+                }
+                else
+                {
+                    throw new Exception($"OPL Directory \"{RootFolder}\" doesn't exist");
+                }
+            }
+
             Refresh();
+
+            if (createFolder)
+            {
+                CreateMissingOPLFolders();
+            }
         }
 
         public void Refresh()
@@ -77,6 +106,20 @@ namespace GoodPS2Manager
 
             return result;
         }
+
+        internal void CreateMissingOPLFolders()
+        {
+            // Should probably implement these folders as part of a dictionary with an enum instead
+            // For now that's over engineering it a bit so we'll just do this stuff manually for now
+            APPS.CreateFolder();
+            ART.CreateFolder();
+            CD.CreateFolder();
+            CFG.CreateFolder();
+            CHT.CreateFolder();
+            DVD.CreateFolder();
+            POPS.CreateFolder();
+            VMC.CreateFolder();
+        }
     }
 
     public class OPLFolder
@@ -94,6 +137,14 @@ namespace GoodPS2Manager
         public OPLFolder(string path)
         {
             Path = path;
+        }
+
+        public void CreateFolder()
+        {
+            if (!Directory.Exists(Path))
+            {
+                Directory.CreateDirectory(Path);
+            }
         }
     }
 
@@ -113,34 +164,36 @@ namespace GoodPS2Manager
 
         public void PopulateGamesList()
         {
-            // Get all our files in the DVD directory that match the accepted extensions
-            // Uses EnumerateFiles for performance benefits
-            var dvdFiles = Directory.EnumerateFiles(Path, "*.*", SearchOption.AllDirectories)
-                .Where(s =>
-                    ImageExtensions.Contains(
-                        System.IO.Path.GetExtension(s).TrimStart('.').ToLowerInvariant()
-                        )
-                    );
-
-            // Set our game type based on folder, right now Dual Layer DVD's can't be detected
-            // When it's possible to test dual layers this will need to be moved into the game
-            // ISO reading logic
-            var gameType = Game.GameType.None;
-
-            switch(FolderType)
+            if (Directory.Exists(Path))
             {
-                case GameFolderType.CD:
-                    gameType = Game.GameType.CD;
-                    break;
-                case GameFolderType.DVD:
-                    gameType = Game.GameType.DVD5;
-                    break;
-            }
+                // Get all our files in the DVD directory that match the accepted extensions
+                // Uses EnumerateFiles for performance benefits
+                var gameFiles = Directory.EnumerateFiles(Path, "*.*", SearchOption.AllDirectories)
+                    .Where(s =>
+                        ImageExtensions.Contains(
+                            System.IO.Path.GetExtension(s).TrimStart('.').ToLowerInvariant()
+                            )
+                        );
 
-            foreach (var dvdFilePath in dvdFiles)
-            {
+                // Set our game type based on folder, right now Dual Layer DVD's can't be detected
+                // When it's possible to test dual layers this will need to be moved into the game
+                // ISO reading logic
+                var gameType = Game.GameType.None;
 
-                GamesList.Add(new Game(dvdFilePath, gameType));
+                switch (FolderType)
+                {
+                    case GameFolderType.CD:
+                        gameType = Game.GameType.CD;
+                        break;
+                    case GameFolderType.DVD:
+                        gameType = Game.GameType.DVD5;
+                        break;
+                }
+
+                foreach (var gameFilePath in gameFiles)
+                {
+                    GamesList.Add(new Game(gameFilePath, gameType));
+                }
             }
         }
     }
