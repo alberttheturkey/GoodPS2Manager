@@ -125,6 +125,9 @@
     <Reference Include="DiscUtils.Xva, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
       <HintPath>..\packages\DiscUtils.Xva.0.16.13\lib\net45\DiscUtils.Xva.dll</HintPath>
     </Reference>
+    <Reference Include="IOExtensions, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FileTransferManager.1.0.6\lib\net472\IOExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="lzfse-net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\lzfse-net.1.0.15\lib\net45\lzfse-net.dll</HintPath>
     </Reference>
@@ -170,6 +173,7 @@
     </Compile>
     <Compile Include="DiscContents.cs" />
     <Compile Include="IDiscImage.cs" />
+    <Compile Include="CustomExceptions.cs" />
     <Compile Include="OPLFolderStructure.cs" />
     <Compile Include="Preferences.cs" />
     <Compile Include="Preferences_Form.cs">

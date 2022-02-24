@@ -71,6 +71,11 @@ namespace GoodPS2Manager
 
             if (discFile.Exists)
             {
+                if(!GamesFolder.ImageExtensions.Any(x=>$".{x}" == discFile.Extension))
+                {
+                    throw new ImageFileIncorrectExtensionException("Image file is not in correct format");
+                }
+
                 using FileStream isoStream = File.OpenRead(Path);
                 CDReader disc = new CDReader(isoStream, true);
                 VolumeLabel = disc.VolumeLabel;
@@ -80,13 +85,13 @@ namespace GoodPS2Manager
 
                 if (disc.FileExists(DiscContents.SystemCNFFileName))
                 {
-                    using StreamReader reader = new StreamReader(disc.OpenFile(DiscContents.SystemCNFFileName, FileMode.Open));
+                    using StreamReader reader = new StreamReader(disc.OpenFile(DiscContents.SystemCNFFileName, FileMode.Open));                    
                     Contents.SystemConfig = new SystemConfig(reader);
                 }
             }
             else
             {
-                throw new Exception("Image file doesn't exist");
+                throw new ImageFileDoesNotExistException("Image file doesn't exist");
             }
         }
 

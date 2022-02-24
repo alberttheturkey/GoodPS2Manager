@@ -45,6 +45,11 @@ namespace GoodPS2Manager
             var secondLine = reader.ReadLine();
             var thirdLine = reader.ReadLine();
 
+            if(firstLine == null || secondLine == null || thirdLine == null)
+            {
+                throw new Exception("Invalid Configuration String in Image");
+            }
+
             if (firstLine.StartsWith(BootParameter))
             {
                 // We first remove all spaces with \s+ and then we use \w{4}_\d{3}.\d{2} to identify the 

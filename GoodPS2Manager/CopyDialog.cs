@@ -1,10 +1,12 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
+﻿using BrightIdeasSoftware;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,47 +28,57 @@ namespace GoodPS2Manager
             Title = "Select ISO files to add to the OPL folder"
         };
 
+        Action<CopyModel, IOExtensions.TransferProgress> progressDelegate;
+
         List<CopyModel> copyJobs = new List<CopyModel>();
 
         private CancellationTokenSource _cts;
 
-        List<string> selectedImages = new List<string>();
-
-        public CopyDialog(OPLFolderStructure loadedOPLStructure, ToolStripProgressBar mainProgressBar, ToolStripStatusLabel progressLabel)
+        public CopyDialog(OPLFolderStructure loadedOPLStructure, ToolStripProgressBar mainProgressBar, ToolStripStatusLabel progressLabel, List<CopyModel> copyJobs, Action<CopyModel, IOExtensions.TransferProgress> progressDelegate)
         {
             InitializeComponent();
             this.loadedOPLStructure = loadedOPLStructure;
             this.mainProgressBar = mainProgressBar;
             this.progressLabel = progressLabel;
+            this.copyJobs = copyJobs;
+            this.progressDelegate = progressDelegate;
+
+            olvProgress.Renderer = new BarRenderer(0,100);
+            CopyJobList.OwnerDraw = true;
+            CopyJobList.SetObjects(copyJobs);
+
+            CheckButtons();
         }
 
+
+        #region Event Handlers
         private void AddImagesButton_Click(object sender, EventArgs e)
         {
             if (addGameDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                selectedImages.AddRange(addGameDialog.FileNames.Where(image => !selectedImages.Contains(image)));
-
-                foreach (string imageFilePath in selectedImages)
+                copyJobs.AddRange(addGameDialog.FileNames.Select(f => new CopyModel
                 {
-                    copyJobs.Add(new CopyModel
-                    {
-                        Source = imageFilePath,
-                        Status = "Ready To Copy",
-                        Progress = 0
-                    });
-                    objectListView1.SetObjects(copyJobs);
-                }
+                    Source = f,
+                    Status = OPLFolderStructure.CopyStatus.ReadyToCopy,
+                    Progress = 0
+                }).Where(x => !copyJobs.Any(y => y.Source == x.Source)).ToList());
 
+                CopyJobList.SetObjects(copyJobs);
                 // Enable the copy button because we can't if items have been added/removed from the listbox without trouble
-                StartCopyButton.Enabled = true;
+                CheckButtons();
             }
         }
+
+        private void CheckButtons()
+        {
+            CancelCopyButton.Enabled = copyJobs.Any(x => x.Status == OPLFolderStructure.CopyStatus.Copying); 
+            StartCopyButton.Enabled = copyJobs.Count > 0 && !copyJobs.Any(x => x.Status == OPLFolderStructure.CopyStatus.Copying);
+            RemoveImagesButton.Enabled = copyJobs.Count > 0 && !copyJobs.Any(x => x.Status == OPLFolderStructure.CopyStatus.Copying);
+        }
+
         private void RemoveImagesButton_Click(object sender, EventArgs e)
         {
-            foreach(ListViewItem image in GameCopyList.SelectedItems)
-            {
-                GameCopyList.Items.Remove(image);
-            }
+            RemoveSelectedItems();
         }
 
         private async void StartCopyButton_Click(object sender, EventArgs e)
@@ -87,42 +99,47 @@ namespace GoodPS2Manager
                 OverallCopyProgressBar.Value = (int)percentage;
                 progressLabel.Text = $"{progressValue} out of {addGameDialog.FileNames.Count()} copied";
             });
-            var progress = progressHandler as IProgress<int>;
-
+            
             _cts = new CancellationTokenSource();
             var token = _cts.Token;
             try
             {
                 // Start copying our files
-                var failedCopies = await Task.Run(() =>
+                await Task.Run(() =>
                 {
-                    return addGameDialog.FileNames.Where(file =>
-                        !loadedOPLStructure.CopyGameToFolder(file, progress, token))
-                        .ToList();
+                    foreach(var copyJob in copyJobs)
+                    {
+                        copyJob.Status = loadedOPLStructure.CopyGameToFolder(copyJob.Source, (progress) => progressDelegate(copyJob, progress), token);
+                    }
                 });
+
+                var failedCopies = copyJobs.Where(x => x.Status != OPLFolderStructure.CopyStatus.Success).ToList();
 
                 // If we have failed copies then let the user know
                 if (failedCopies.Count > 0)
                 {
-                    var realSuccessfulCount = addGameDialog.FileNames.Count() - failedCopies.Count;
+                    var realSuccessfulCount = copyJobs.Count - failedCopies.Count;
 
                     MessageBox.Show($"Issues occured during copy\n" +
                         $"Successfully copied {realSuccessfulCount} Games\n" +
                         $"Failed to copy {failedCopies.Count} files\n" +
-                        $"The following files failed {string.Join("\n", failedCopies)}");
+                        $"The following files failed\n" +
+                        $"{string.Join("\n", failedCopies.Select(x => x.Source))}");
 
+
+                    CopyJobList.SetObjects(copyJobs);
                 }
                 else
                 {
-                    MessageBox.Show($"Successfully copied {addGameDialog.FileNames.Count()} Games");
+                    MessageBox.Show($"Successfully copied {copyJobs.Count} Games");
                 }
 
                 // Reset our interface to show new items
                 //LoadOPLFolder(loadedOPLStructure.RootFolder);
 
                 // Let the user know the operation has been completed
-                progressLabel.Text = $"Copy Complete!";
                 mainProgressBar.Enabled = false;
+                CheckButtons();
             }
             catch (OperationCanceledException)
             {
@@ -134,8 +151,7 @@ namespace GoodPS2Manager
 
                 progressLabel.Text = $"Copy operation was Cancelled";
             }
-
-            StartCopyButton.Enabled = true;
+            CheckButtons();
             CancelCopyButton.Enabled = false;
         }
 
@@ -149,28 +165,95 @@ namespace GoodPS2Manager
             _cts.Cancel();
         }
 
-        private void GameCopyList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        private void CopyJobList_ItemsChanged(object sender, BrightIdeasSoftware.ItemsChangedEventArgs e)
         {
-            if(((ListView)sender).SelectedItems.Count > 0)
+            CheckButtons();
+        }
+
+        private void CopyJobList_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
             {
-                RemoveImagesButton.Enabled = true;
-            }
-            else
-            {
-                RemoveImagesButton.Enabled = false;
+                RemoveSelectedItems();
             }
         }
 
-        private void CopyDialog_Load(object sender, EventArgs e)
-        {
+        #endregion
 
+        private void RemoveSelectedItems()
+        {
+            foreach (CopyModel obj in CopyJobList.SelectedObjects)
+            {
+                copyJobs.RemoveAll(x => x.Source == obj.Source);
+            }
+            CopyJobList.SetObjects(copyJobs);
         }
+
+
     }
 
-    public class CopyModel
+    public class CopyModel : INotifyPropertyChanged
     {
-        public string Source { get; set; }
-        public string Status { get; set; }
-        public int Progress { get; set; }
+        private OPLFolderStructure.CopyStatus status;
+        private string source;
+        private int progress;
+
+        public string Source { get => source; set
+            {
+                source = value;
+                OnPropertyChanged(nameof(Source));
+            }
+        }
+
+        public string StatusDisplay
+        {
+            get
+            {
+                return status switch
+                {
+                    OPLFolderStructure.CopyStatus.Failed => "Failed",
+                    OPLFolderStructure.CopyStatus.SourceDoesntExist => "Source Doesn't Exist",
+                    OPLFolderStructure.CopyStatus.FileAlreadyExists => "Duplicate Game",
+                    OPLFolderStructure.CopyStatus.Cancelled => "Cancelled",
+                    OPLFolderStructure.CopyStatus.FolderDoesntExist => "Destination Folder Doesn't exist",
+                    OPLFolderStructure.CopyStatus.Success => "Completed!",
+                    OPLFolderStructure.CopyStatus.None => "None",
+                    OPLFolderStructure.CopyStatus.ReadyToCopy => "Ready To Copy",
+                    OPLFolderStructure.CopyStatus.Copying => "Copying",
+                    OPLFolderStructure.CopyStatus.FileNotImage => "File is not image",
+                    _ => "Unknown?",
+                };
+            }
+        }
+
+        public OPLFolderStructure.CopyStatus Status { get => status; set
+            {
+                status = value;
+                OnPropertyChanged(nameof(Status));
+            }
+        }
+
+        public int Progress
+        {
+            get => progress; set 
+            { 
+                progress = value;
+                OnPropertyChanged(nameof(Progress));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Create the OnPropertyChanged method to raise the event
+        // The calling member's name will be used as the parameter.
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        public CopyModel()
+        {
+
+        }
     }
 }
