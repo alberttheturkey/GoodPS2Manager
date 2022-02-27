@@ -28,20 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GoodPS2Manger_Main_Form));
+            this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openOPLFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshOPLFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addGamesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openCopyProgressDialogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.oPLConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OPLStructureLabel = new System.Windows.Forms.Label();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.StatusStrip = new System.Windows.Forms.StatusStrip();
             this.FolderStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.MainProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.ProgressPercentageLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.GamesListView = new System.Windows.Forms.ListView();
             this.GameName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.GameRegion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -50,24 +56,25 @@
             this.VolumeName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.GameSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.createOPLFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
+            this.MenuStrip.SuspendLayout();
+            this.StatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // menuStrip1
+            // MenuStrip
             // 
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.toolToolStripMenuItem,
+            this.viewToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
-            this.menuStrip1.Size = new System.Drawing.Size(1221, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            this.MenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.MenuStrip.Name = "MenuStrip";
+            this.MenuStrip.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
+            this.MenuStrip.Size = new System.Drawing.Size(1221, 24);
+            this.MenuStrip.TabIndex = 0;
+            this.MenuStrip.Text = "MenuStrip";
             // 
             // fileToolStripMenuItem
             // 
@@ -103,7 +110,8 @@
             // toolToolStripMenuItem
             // 
             this.toolToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.refreshOPLFolderToolStripMenuItem});
+            this.refreshOPLFolderToolStripMenuItem,
+            this.addGamesToolStripMenuItem});
             this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
             this.toolToolStripMenuItem.Size = new System.Drawing.Size(46, 22);
             this.toolToolStripMenuItem.Text = "Tools";
@@ -114,6 +122,28 @@
             this.refreshOPLFolderToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.refreshOPLFolderToolStripMenuItem.Text = "Refresh OPL Folder";
             this.refreshOPLFolderToolStripMenuItem.Click += new System.EventHandler(this.refreshOPLFolderToolStripMenuItem_Click);
+            // 
+            // addGamesToolStripMenuItem
+            // 
+            this.addGamesToolStripMenuItem.Enabled = false;
+            this.addGamesToolStripMenuItem.Name = "addGamesToolStripMenuItem";
+            this.addGamesToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.addGamesToolStripMenuItem.Text = "Add Games";
+            this.addGamesToolStripMenuItem.Click += new System.EventHandler(this.addGamesToolStripMenuItem_Click);
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openCopyProgressDialogToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 22);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // openCopyProgressDialogToolStripMenuItem
+            // 
+            this.openCopyProgressDialogToolStripMenuItem.Name = "openCopyProgressDialogToolStripMenuItem";
+            this.openCopyProgressDialogToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.openCopyProgressDialogToolStripMenuItem.Text = "Open Copy Progress Dialog";
             // 
             // settingsToolStripMenuItem
             // 
@@ -154,29 +184,42 @@
             this.OPLStructureLabel.TabIndex = 1;
             this.OPLStructureLabel.Text = "Nothing Loaded";
             // 
-            // statusStrip1
+            // StatusStrip
             // 
-            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FolderStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 603);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 9, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1221, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
+            this.StatusStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FolderStatusLabel,
+            this.MainProgressBar,
+            this.ProgressPercentageLabel});
+            this.StatusStrip.Location = new System.Drawing.Point(0, 602);
+            this.StatusStrip.Name = "StatusStrip";
+            this.StatusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 9, 0);
+            this.StatusStrip.Size = new System.Drawing.Size(1221, 23);
+            this.StatusStrip.TabIndex = 2;
+            this.StatusStrip.Text = "StatusStrip";
             // 
             // FolderStatusLabel
             // 
             this.FolderStatusLabel.Name = "FolderStatusLabel";
-            this.FolderStatusLabel.Size = new System.Drawing.Size(121, 17);
+            this.FolderStatusLabel.Size = new System.Drawing.Size(121, 18);
             this.FolderStatusLabel.Text = "No OPL folder loaded";
+            // 
+            // MainProgressBar
+            // 
+            this.MainProgressBar.Name = "MainProgressBar";
+            this.MainProgressBar.Size = new System.Drawing.Size(67, 17);
+            // 
+            // ProgressPercentageLabel
+            // 
+            this.ProgressPercentageLabel.Name = "ProgressPercentageLabel";
+            this.ProgressPercentageLabel.Size = new System.Drawing.Size(0, 18);
             // 
             // GamesListView
             // 
             this.GamesListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.GamesListView.CheckBoxes = true;
             this.GamesListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.GameName,
             this.GameRegion,
@@ -211,7 +254,7 @@
             // GameID
             // 
             this.GameID.Text = "ID";
-            this.GameID.Width = 54;
+            this.GameID.Width = 100;
             // 
             // VolumeName
             // 
@@ -235,21 +278,21 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1221, 625);
             this.Controls.Add(this.GamesListView);
-            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.StatusStrip);
             this.Controls.Add(this.OPLStructureLabel);
-            this.Controls.Add(this.menuStrip1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-            this.MainMenuStrip = this.menuStrip1;
+            this.Controls.Add(this.MenuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.MenuStrip;
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MinimumSize = new System.Drawing.Size(670, 658);
             this.Name = "GoodPS2Manger_Main_Form";
             this.Text = "Good PS2 Manager Version";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GoodPS2Manger_Main_Form_FormClosing);
             this.Load += new System.EventHandler(this.GoodPS2Manger_Main_Form_Load);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
+            this.MenuStrip.ResumeLayout(false);
+            this.MenuStrip.PerformLayout();
+            this.StatusStrip.ResumeLayout(false);
+            this.StatusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -257,7 +300,7 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip MenuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openOPLFolderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
@@ -268,7 +311,7 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.Label OPLStructureLabel;
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.StatusStrip StatusStrip;
         private System.Windows.Forms.ListView GamesListView;
         private System.Windows.Forms.ToolStripMenuItem refreshOPLFolderToolStripMenuItem;
         private System.Windows.Forms.ColumnHeader GameName;
@@ -278,6 +321,11 @@
         private System.Windows.Forms.ColumnHeader GameRegion;
         private System.Windows.Forms.ColumnHeader VolumeName;
         private System.Windows.Forms.ColumnHeader GameSize;
+        private System.Windows.Forms.ToolStripMenuItem addGamesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripProgressBar MainProgressBar;
+        private System.Windows.Forms.ToolStripStatusLabel ProgressPercentageLabel;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openCopyProgressDialogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createOPLFolderToolStripMenuItem;
     }
 }

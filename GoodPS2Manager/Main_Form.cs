@@ -17,6 +17,7 @@ namespace GoodPS2Manager
     {
         Preferences currentPreferences = new Preferences();
         OPLFolderStructure loadedOPLStructure;
+        List<CopyModel> copyJobs = new List<CopyModel>();
 
         public GoodPS2Manger_Main_Form()
         {
@@ -43,11 +44,6 @@ namespace GoodPS2Manager
             if(preferencesResult == DialogResult.OK)
             {
                 currentPreferences = preferenceForm.pendingPreferences;
-                //MessageBox.Show($"Saved Successfully {currentPreferences.DefaultOPLPath}");
-            }
-            else if(preferencesResult == DialogResult.Cancel)
-            {
-                //MessageBox.Show($"Preferences was closed without saving changes {currentPreferences.DefaultOPLPath}");
             }
         }
 
@@ -74,6 +70,13 @@ namespace GoodPS2Manager
         {
             LoadOPLFolder(currentPreferences.DefaultOPLPath);
         }
+
+        private void addGamesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var copyDialog = new CopyDialog(loadedOPLStructure, MainProgressBar, ProgressPercentageLabel, copyJobs, HandleProgress);
+            copyDialog.ShowDialog();
+        }
+
         #endregion
 
         #region Helper Methods
@@ -82,6 +85,18 @@ namespace GoodPS2Manager
             try
             {
                 loadedOPLStructure = new OPLFolderStructure(path, createFolder);
+
+                if (loadedOPLStructure.FailedLoadsPresent)
+                {
+                    var messageList = "";
+                    foreach(var failedLoad in loadedOPLStructure.FailedLoads)
+                    {
+                        messageList += $"\n{failedLoad.Key} - {failedLoad.Value}";
+                    }
+
+                    // TODO: Turn this into a log instead of a message box
+                    MessageBox.Show("The following games failed to load" + messageList, "Games Failed To Load");
+                }
 
                 if (loadedOPLStructure.MissingFolders && currentPreferences.CheckOPLFolderOnLoad && !createFolder)
                 {
@@ -99,6 +114,7 @@ namespace GoodPS2Manager
                 // Update any other interface elements that need to be changed once the folder is loaded
                 OPLStructureLabel.Text = loadedOPLStructure.ToString();
                 FolderStatusLabel.Text = $"Current Folder: {loadedOPLStructure.RootFolder}";
+                addGamesToolStripMenuItem.Enabled = true;
             }
             catch (Exception e)
             {
@@ -127,6 +143,36 @@ namespace GoodPS2Manager
             }
         }
         #endregion
+
+
+        private void HandleProgress(CopyModel copyJob, IOExtensions.TransferProgress progress)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new HandleProgressDelegate(HandleProgressShower), copyJob, progress);
+                return;
+            }
+
+        }
+
+        private delegate void HandleProgressDelegate(CopyModel copyJob, IOExtensions.TransferProgress progress);
+
+        private void HandleProgressShower(CopyModel copyJob, IOExtensions.TransferProgress progress)
+        {
+            var currentJob = copyJobs.Where(x => copyJob.Source == x.Source).FirstOrDefault();
+            currentJob.Progress = (int)progress.Percentage;
+            if(progress.Percentage > 0)
+            {
+                currentJob.Status = OPLFolderStructure.CopyStatus.Copying;
+            }
+            
+            if(progress.Percentage >= 100)
+            {
+                currentJob.Status = OPLFolderStructure.CopyStatus.Success;
+            }
+                        
+            MainProgressBar.Value = copyJobs.Sum(x => x.Progress) / copyJobs.Count;
+        }
 
         private void createOPLFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {

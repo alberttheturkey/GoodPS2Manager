@@ -41,20 +41,23 @@
             // 
             // DefaultOPLPathTextbox
             // 
-            this.DefaultOPLPathTextbox.Location = new System.Drawing.Point(257, 53);
-            this.DefaultOPLPathTextbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.DefaultOPLPathTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DefaultOPLPathTextbox.Location = new System.Drawing.Point(171, 34);
+            this.DefaultOPLPathTextbox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
             this.DefaultOPLPathTextbox.Name = "DefaultOPLPathTextbox";
-            this.DefaultOPLPathTextbox.Size = new System.Drawing.Size(354, 20);
+            this.DefaultOPLPathTextbox.Size = new System.Drawing.Size(285, 20);
             this.DefaultOPLPathTextbox.TabIndex = 0;
             this.PreferencesToolTip.SetToolTip(this.DefaultOPLPathTextbox, "This is the default OPL Folder to load on startup");
             this.DefaultOPLPathTextbox.TextChanged += new System.EventHandler(this.DefaultOPLPathTextbox_TextChanged);
             // 
             // OPLFolderBrowseButton
             // 
-            this.OPLFolderBrowseButton.Location = new System.Drawing.Point(613, 49);
-            this.OPLFolderBrowseButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.OPLFolderBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.OPLFolderBrowseButton.Location = new System.Drawing.Point(458, 31);
+            this.OPLFolderBrowseButton.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
             this.OPLFolderBrowseButton.Name = "OPLFolderBrowseButton";
-            this.OPLFolderBrowseButton.Size = new System.Drawing.Size(100, 26);
+            this.OPLFolderBrowseButton.Size = new System.Drawing.Size(125, 25);
             this.OPLFolderBrowseButton.TabIndex = 1;
             this.OPLFolderBrowseButton.Text = "Browse";
             this.OPLFolderBrowseButton.UseVisualStyleBackColor = true;
@@ -63,8 +66,8 @@
             // DefaultOPLFolderLabel
             // 
             this.DefaultOPLFolderLabel.AutoSize = true;
-            this.DefaultOPLFolderLabel.Location = new System.Drawing.Point(156, 53);
-            this.DefaultOPLFolderLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.DefaultOPLFolderLabel.Location = new System.Drawing.Point(72, 37);
+            this.DefaultOPLFolderLabel.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.DefaultOPLFolderLabel.Name = "DefaultOPLFolderLabel";
             this.DefaultOPLFolderLabel.Size = new System.Drawing.Size(97, 13);
             this.DefaultOPLFolderLabel.TabIndex = 2;
@@ -72,10 +75,11 @@
             // 
             // SavePreferencesButton
             // 
-            this.SavePreferencesButton.Location = new System.Drawing.Point(509, 408);
-            this.SavePreferencesButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.SavePreferencesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.SavePreferencesButton.Location = new System.Drawing.Point(331, 292);
+            this.SavePreferencesButton.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
             this.SavePreferencesButton.Name = "SavePreferencesButton";
-            this.SavePreferencesButton.Size = new System.Drawing.Size(100, 26);
+            this.SavePreferencesButton.Size = new System.Drawing.Size(125, 25);
             this.SavePreferencesButton.TabIndex = 4;
             this.SavePreferencesButton.Text = "Save";
             this.SavePreferencesButton.UseVisualStyleBackColor = true;
@@ -83,10 +87,11 @@
             // 
             // CancelPreferenceButton
             // 
-            this.CancelPreferenceButton.Location = new System.Drawing.Point(613, 408);
-            this.CancelPreferenceButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CancelPreferenceButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.CancelPreferenceButton.Location = new System.Drawing.Point(458, 292);
+            this.CancelPreferenceButton.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
             this.CancelPreferenceButton.Name = "CancelPreferenceButton";
-            this.CancelPreferenceButton.Size = new System.Drawing.Size(100, 26);
+            this.CancelPreferenceButton.Size = new System.Drawing.Size(125, 25);
             this.CancelPreferenceButton.TabIndex = 5;
             this.CancelPreferenceButton.Text = "Cancel";
             this.CancelPreferenceButton.UseVisualStyleBackColor = true;
@@ -95,8 +100,8 @@
             // LoadOPLOnStartupCheckbox
             // 
             this.LoadOPLOnStartupCheckbox.AutoSize = true;
-            this.LoadOPLOnStartupCheckbox.Location = new System.Drawing.Point(257, 83);
-            this.LoadOPLOnStartupCheckbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.LoadOPLOnStartupCheckbox.Location = new System.Drawing.Point(171, 54);
+            this.LoadOPLOnStartupCheckbox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
             this.LoadOPLOnStartupCheckbox.Name = "LoadOPLOnStartupCheckbox";
             this.LoadOPLOnStartupCheckbox.Size = new System.Drawing.Size(156, 17);
             this.LoadOPLOnStartupCheckbox.TabIndex = 6;
@@ -115,8 +120,8 @@
             this.CheckOPLFolderCheckBox.AutoSize = true;
             this.CheckOPLFolderCheckBox.Checked = true;
             this.CheckOPLFolderCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CheckOPLFolderCheckBox.Location = new System.Drawing.Point(257, 104);
-            this.CheckOPLFolderCheckBox.Margin = new System.Windows.Forms.Padding(2);
+            this.CheckOPLFolderCheckBox.Location = new System.Drawing.Point(171, 68);
+            this.CheckOPLFolderCheckBox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
             this.CheckOPLFolderCheckBox.Name = "CheckOPLFolderCheckBox";
             this.CheckOPLFolderCheckBox.Size = new System.Drawing.Size(234, 17);
             this.CheckOPLFolderCheckBox.TabIndex = 7;
@@ -130,7 +135,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(721, 442);
+            this.ClientSize = new System.Drawing.Size(593, 327);
             this.Controls.Add(this.CheckOPLFolderCheckBox);
             this.Controls.Add(this.LoadOPLOnStartupCheckbox);
             this.Controls.Add(this.CancelPreferenceButton);
