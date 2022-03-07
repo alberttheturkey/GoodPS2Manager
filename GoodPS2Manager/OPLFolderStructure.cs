@@ -94,7 +94,7 @@ namespace GoodPS2Manager
                 return CopyStatus.SourceDoesntExist;
             }
 
-            if (!GamesFolder.ImageExtensions.Any(x => $".{x}" == Path.GetExtension(sourcePath))){
+            if (!GamesFolder.ImageExtensions.Any(x => $".{x.Key}" == Path.GetExtension(sourcePath))){
                 return CopyStatus.FileNotImage;
             }
 
@@ -169,7 +169,7 @@ namespace GoodPS2Manager
     public class GamesFolder : OPLFolder
     {
         // Add DVD extension types here, make sure extension types are LOWER CASE
-        public static List<string> ImageExtensions = new List<string> { "iso" };
+        public static Dictionary<string,string> ImageExtensions = new Dictionary<string,string> { { "iso","Image File" } };
         public List<Game> GamesList { get; set; } = new List<Game>();
         public enum GameFolderType { None, DVD, CD }
         public GameFolderType FolderType;
@@ -191,7 +191,7 @@ namespace GoodPS2Manager
                 // Uses EnumerateFiles for performance benefits
                 var gameFiles = Directory.EnumerateFiles(Path, "*.*", SearchOption.AllDirectories)
                     .Where(s =>
-                        ImageExtensions.Contains(
+                        ImageExtensions.ContainsKey(
                             System.IO.Path.GetExtension(s).TrimStart('.').ToLowerInvariant()
                             )
                         );

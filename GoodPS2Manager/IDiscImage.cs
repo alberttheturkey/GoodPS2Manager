@@ -71,7 +71,7 @@ namespace GoodPS2Manager
 
             if (discFile.Exists)
             {
-                if(!GamesFolder.ImageExtensions.Any(x=>$".{x}" == discFile.Extension))
+                if(!GamesFolder.ImageExtensions.Any(x=>$".{x.Key}" == discFile.Extension))
                 {
                     throw new ImageFileIncorrectExtensionException("Image file is not in correct format");
                 }

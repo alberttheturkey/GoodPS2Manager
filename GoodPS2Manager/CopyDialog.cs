@@ -54,6 +54,11 @@ namespace GoodPS2Manager
         #region Event Handlers
         private void AddImagesButton_Click(object sender, EventArgs e)
         {
+            foreach (var extension in GamesFolder.ImageExtensions)
+            {
+                addGameDialog.Filters.Add(new CommonFileDialogFilter(extension.Value, extension.Key));
+            }
+
             if (addGameDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 copyJobs.AddRange(addGameDialog.FileNames.Select(f => new CopyModel
