@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GoodPS2Manager
 {
@@ -22,9 +17,7 @@ namespace GoodPS2Manager
 
         public bool ValidatePreferences()
         {
-            bool preferencesValid = false;
-            preferencesValid = Path.IsPathRooted(DefaultOPLPath);
-            return preferencesValid;
+            return Path.IsPathRooted(DefaultOPLPath);
         }
     }
 }
