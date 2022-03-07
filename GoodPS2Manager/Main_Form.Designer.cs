@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GoodPS2Manger_Main_Form));
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createOPLFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openOPLFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,13 +56,13 @@
             this.GameID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.VolumeName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.GameSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.createOPLFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.StatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuStrip
             // 
+            this.MenuStrip.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.MenuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
@@ -71,8 +72,7 @@
             this.helpToolStripMenuItem});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
-            this.MenuStrip.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
-            this.MenuStrip.Size = new System.Drawing.Size(1221, 24);
+            this.MenuStrip.Size = new System.Drawing.Size(1832, 33);
             this.MenuStrip.TabIndex = 0;
             this.MenuStrip.Text = "MenuStrip";
             // 
@@ -84,27 +84,34 @@
             this.preferencesToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 22);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
             this.fileToolStripMenuItem.Text = "File";
+            // 
+            // createOPLFolderToolStripMenuItem
+            // 
+            this.createOPLFolderToolStripMenuItem.Name = "createOPLFolderToolStripMenuItem";
+            this.createOPLFolderToolStripMenuItem.Size = new System.Drawing.Size(256, 34);
+            this.createOPLFolderToolStripMenuItem.Text = "Create OPL Folder";
+            this.createOPLFolderToolStripMenuItem.Click += new System.EventHandler(this.createOPLFolderToolStripMenuItem_Click);
             // 
             // openOPLFolderToolStripMenuItem
             // 
             this.openOPLFolderToolStripMenuItem.Name = "openOPLFolderToolStripMenuItem";
-            this.openOPLFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openOPLFolderToolStripMenuItem.Size = new System.Drawing.Size(256, 34);
             this.openOPLFolderToolStripMenuItem.Text = "Open OPL Folder";
             this.openOPLFolderToolStripMenuItem.Click += new System.EventHandler(this.openOPLFolderToolStripMenuItem_Click);
             // 
             // preferencesToolStripMenuItem
             // 
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(256, 34);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(256, 34);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // toolToolStripMenuItem
@@ -113,13 +120,13 @@
             this.refreshOPLFolderToolStripMenuItem,
             this.addGamesToolStripMenuItem});
             this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
-            this.toolToolStripMenuItem.Size = new System.Drawing.Size(46, 22);
+            this.toolToolStripMenuItem.Size = new System.Drawing.Size(69, 29);
             this.toolToolStripMenuItem.Text = "Tools";
             // 
             // refreshOPLFolderToolStripMenuItem
             // 
             this.refreshOPLFolderToolStripMenuItem.Name = "refreshOPLFolderToolStripMenuItem";
-            this.refreshOPLFolderToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.refreshOPLFolderToolStripMenuItem.Size = new System.Drawing.Size(264, 34);
             this.refreshOPLFolderToolStripMenuItem.Text = "Refresh OPL Folder";
             this.refreshOPLFolderToolStripMenuItem.Click += new System.EventHandler(this.refreshOPLFolderToolStripMenuItem_Click);
             // 
@@ -127,7 +134,7 @@
             // 
             this.addGamesToolStripMenuItem.Enabled = false;
             this.addGamesToolStripMenuItem.Name = "addGamesToolStripMenuItem";
-            this.addGamesToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.addGamesToolStripMenuItem.Size = new System.Drawing.Size(264, 34);
             this.addGamesToolStripMenuItem.Text = "Add Games";
             this.addGamesToolStripMenuItem.Click += new System.EventHandler(this.addGamesToolStripMenuItem_Click);
             // 
@@ -136,13 +143,13 @@
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openCopyProgressDialogToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 22);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(65, 29);
             this.viewToolStripMenuItem.Text = "View";
             // 
             // openCopyProgressDialogToolStripMenuItem
             // 
             this.openCopyProgressDialogToolStripMenuItem.Name = "openCopyProgressDialogToolStripMenuItem";
-            this.openCopyProgressDialogToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.openCopyProgressDialogToolStripMenuItem.Size = new System.Drawing.Size(336, 34);
             this.openCopyProgressDialogToolStripMenuItem.Text = "Open Copy Progress Dialog";
             // 
             // settingsToolStripMenuItem
@@ -150,13 +157,13 @@
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.oPLConfigToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(92, 29);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // oPLConfigToolStripMenuItem
             // 
             this.oPLConfigToolStripMenuItem.Name = "oPLConfigToolStripMenuItem";
-            this.oPLConfigToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.oPLConfigToolStripMenuItem.Size = new System.Drawing.Size(204, 34);
             this.oPLConfigToolStripMenuItem.Text = "OPL Config";
             // 
             // helpToolStripMenuItem
@@ -164,23 +171,22 @@
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 22);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(65, 29);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(164, 34);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // OPLStructureLabel
             // 
             this.OPLStructureLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.OPLStructureLabel.AutoSize = true;
-            this.OPLStructureLabel.Location = new System.Drawing.Point(953, 23);
-            this.OPLStructureLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.OPLStructureLabel.Location = new System.Drawing.Point(1533, 36);
             this.OPLStructureLabel.Name = "OPLStructureLabel";
-            this.OPLStructureLabel.Size = new System.Drawing.Size(83, 13);
+            this.OPLStructureLabel.Size = new System.Drawing.Size(122, 20);
             this.OPLStructureLabel.TabIndex = 1;
             this.OPLStructureLabel.Text = "Nothing Loaded";
             // 
@@ -191,28 +197,28 @@
             this.FolderStatusLabel,
             this.MainProgressBar,
             this.ProgressPercentageLabel});
-            this.StatusStrip.Location = new System.Drawing.Point(0, 602);
+            this.StatusStrip.Location = new System.Drawing.Point(0, 930);
             this.StatusStrip.Name = "StatusStrip";
-            this.StatusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 9, 0);
-            this.StatusStrip.Size = new System.Drawing.Size(1221, 23);
+            this.StatusStrip.Padding = new System.Windows.Forms.Padding(2, 0, 14, 0);
+            this.StatusStrip.Size = new System.Drawing.Size(1832, 32);
             this.StatusStrip.TabIndex = 2;
             this.StatusStrip.Text = "StatusStrip";
             // 
             // FolderStatusLabel
             // 
             this.FolderStatusLabel.Name = "FolderStatusLabel";
-            this.FolderStatusLabel.Size = new System.Drawing.Size(121, 18);
+            this.FolderStatusLabel.Size = new System.Drawing.Size(185, 25);
             this.FolderStatusLabel.Text = "No OPL folder loaded";
             // 
             // MainProgressBar
             // 
             this.MainProgressBar.Name = "MainProgressBar";
-            this.MainProgressBar.Size = new System.Drawing.Size(67, 17);
+            this.MainProgressBar.Size = new System.Drawing.Size(100, 24);
             // 
             // ProgressPercentageLabel
             // 
             this.ProgressPercentageLabel.Name = "ProgressPercentageLabel";
-            this.ProgressPercentageLabel.Size = new System.Drawing.Size(0, 18);
+            this.ProgressPercentageLabel.Size = new System.Drawing.Size(0, 25);
             // 
             // GamesListView
             // 
@@ -230,10 +236,9 @@
             this.GamesListView.FullRowSelect = true;
             this.GamesListView.GridLines = true;
             this.GamesListView.HideSelection = false;
-            this.GamesListView.Location = new System.Drawing.Point(-3, 26);
-            this.GamesListView.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.GamesListView.Location = new System.Drawing.Point(12, 36);
             this.GamesListView.Name = "GamesListView";
-            this.GamesListView.Size = new System.Drawing.Size(952, 575);
+            this.GamesListView.Size = new System.Drawing.Size(1515, 882);
             this.GamesListView.TabIndex = 3;
             this.GamesListView.UseCompatibleStateImageBehavior = false;
             this.GamesListView.View = System.Windows.Forms.View.Details;
@@ -265,26 +270,18 @@
             // 
             this.GameSize.Text = "Size";
             // 
-            // createOPLFolderToolStripMenuItem
-            // 
-            this.createOPLFolderToolStripMenuItem.Name = "createOPLFolderToolStripMenuItem";
-            this.createOPLFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.createOPLFolderToolStripMenuItem.Text = "Create OPL Folder";
-            this.createOPLFolderToolStripMenuItem.Click += new System.EventHandler(this.createOPLFolderToolStripMenuItem_Click);
-            // 
             // GoodPS2Manger_Main_Form
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1221, 625);
+            this.ClientSize = new System.Drawing.Size(1832, 962);
             this.Controls.Add(this.GamesListView);
             this.Controls.Add(this.StatusStrip);
             this.Controls.Add(this.OPLStructureLabel);
             this.Controls.Add(this.MenuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.MenuStrip;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.MinimumSize = new System.Drawing.Size(670, 658);
+            this.MinimumSize = new System.Drawing.Size(994, 982);
             this.Name = "GoodPS2Manger_Main_Form";
             this.Text = "Good PS2 Manager Version";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GoodPS2Manger_Main_Form_FormClosing);
