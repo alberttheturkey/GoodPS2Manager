@@ -16,10 +16,11 @@ namespace GoodPS2Manager
 {
     public partial class CopyDialog : Form
     {
-        OPLFolderStructure loadedOPLStructure;
-        ToolStripProgressBar mainProgressBar;
-        ToolStripStatusLabel progressLabel;
-        CommonOpenFileDialog addGameDialog = new CommonOpenFileDialog
+        readonly Action<CopyModel, IOExtensions.TransferProgress> progressDelegate;
+        readonly OPLFolderStructure loadedOPLStructure;
+        readonly ToolStripProgressBar mainProgressBar;
+        readonly ToolStripStatusLabel progressLabel;
+        readonly CommonOpenFileDialog addGameDialog = new CommonOpenFileDialog
         {
             Multiselect = true,
             RestoreDirectory = true,
@@ -27,12 +28,9 @@ namespace GoodPS2Manager
             EnsurePathExists = true,
             Title = "Select ISO files to add to the OPL folder"
         };
+        CancellationTokenSource CancellationTokenSource;
 
-        Action<CopyModel, IOExtensions.TransferProgress> progressDelegate;
-
-        List<CopyModel> copyJobs = new List<CopyModel>();
-
-        private CancellationTokenSource _cts;
+        public List<CopyModel> copyJobs = new List<CopyModel>();
 
         public CopyDialog(OPLFolderStructure loadedOPLStructure, ToolStripProgressBar mainProgressBar, ToolStripStatusLabel progressLabel, List<CopyModel> copyJobs, Action<CopyModel, IOExtensions.TransferProgress> progressDelegate)
         {
@@ -105,8 +103,8 @@ namespace GoodPS2Manager
                 progressLabel.Text = $"{progressValue} out of {addGameDialog.FileNames.Count()} copied";
             });
             
-            _cts = new CancellationTokenSource();
-            var token = _cts.Token;
+            CancellationTokenSource = new CancellationTokenSource();
+            var token = CancellationTokenSource.Token;
             try
             {
                 // Start copying our files
@@ -167,7 +165,7 @@ namespace GoodPS2Manager
 
         private void CancelCopyButton_Click(object sender, EventArgs e)
         {
-            _cts.Cancel();
+            CancellationTokenSource.Cancel();
         }
 
         private void CopyJobList_ItemsChanged(object sender, BrightIdeasSoftware.ItemsChangedEventArgs e)
