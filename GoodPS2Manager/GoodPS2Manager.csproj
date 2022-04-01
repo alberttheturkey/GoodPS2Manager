@@ -165,23 +165,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArtDownload_Form.cs">
+    <Compile Include="Art Downloader\ArtDownload_Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ArtDownload_Form.Designer.cs">
+    <Compile Include="Art Downloader\ArtDownload_Form.Designer.cs">
       <DependentUpon>ArtDownload_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="CopyDialog.cs">
+    <Compile Include="File Management\CopyDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CopyDialog.Designer.cs">
+    <Compile Include="File Management\CopyDialog.Designer.cs">
       <DependentUpon>CopyDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="DiscContents.cs" />
-    <Compile Include="IDiscImage.cs" />
+    <Compile Include="Disc Management\DiscContents.cs" />
+    <Compile Include="Disc Management\IDiscImage.cs" />
     <Compile Include="CustomExceptions.cs" />
-    <Compile Include="ImageDownloader.cs" />
-    <Compile Include="OPLFolderStructure.cs" />
+    <Compile Include="Art Downloader\ImageDownloader.cs" />
+    <Compile Include="File Management\OPLFolderStructure.cs" />
     <Compile Include="Preferences.cs" />
     <Compile Include="Preferences_Form.cs">
       <SubType>Form</SubType>
@@ -197,10 +197,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ArtDownload_Form.resx">
+    <EmbeddedResource Include="Art Downloader\ArtDownload_Form.resx">
       <DependentUpon>ArtDownload_Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CopyDialog.resx">
+    <EmbeddedResource Include="File Management\CopyDialog.resx">
       <DependentUpon>CopyDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Preferences_Form.resx">
