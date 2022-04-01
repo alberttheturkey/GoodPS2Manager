@@ -14,7 +14,8 @@ namespace GoodPS2Manager
     {
         Preferences currentPreferences = new Preferences();
         OPLFolderStructure loadedOPLStructure;
-        List<CopyModel> copyJobs = new List<CopyModel>();
+        public List<CopyModel> copyJobs = new List<CopyModel>();
+        public ImageDownloader imageDownloader;
 
         public GoodPS2Manger_Main_Form()
         {
@@ -72,6 +73,46 @@ namespace GoodPS2Manager
         {
             var copyDialog = new CopyDialog(loadedOPLStructure, MainProgressBar, ProgressPercentageLabel, copyJobs, HandleProgress);
             copyDialog.ShowDialog();
+        }
+
+        private void OpenOPLFolderButton_Click(object sender, EventArgs e)
+        {
+            Process.Start(loadedOPLStructure.RootFolder);
+        }
+
+        private void artDownloaderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var copyDialog = new ArtDownload_Form(loadedOPLStructure, imageDownloader);
+            copyDialog.ShowDialog();
+        }
+
+        private void createOPLFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var folderDialog = new CommonOpenFileDialog
+            {
+                IsFolderPicker = true,
+                EnsurePathExists = false,
+                EnsureFileExists = false,
+                EnsureValidNames = false,
+            };
+
+            if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                LoadOPLFolder(folderDialog.FileName, true);
+
+                if (!loadedOPLStructure.FolderExists)
+                {
+                    MessageBox.Show("OPL folder creation failed");
+                }
+                else if (loadedOPLStructure.MissingFolders)
+                {
+                    MessageBox.Show("OPL folder created but folders are missing");
+                }
+                else
+                {
+                    MessageBox.Show("OPL folder successfully created");
+                }
+            }
         }
 
         #endregion
@@ -141,7 +182,7 @@ namespace GoodPS2Manager
         }
         #endregion
 
-
+        #region Progress Methods
         private void HandleProgress(CopyModel copyJob, IOExtensions.TransferProgress progress)
         {
             if (InvokeRequired)
@@ -171,38 +212,6 @@ namespace GoodPS2Manager
             MainProgressBar.Value = copyJobs.Sum(x => x.Progress) / copyJobs.Count;
         }
 
-        private void createOPLFolderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var folderDialog = new CommonOpenFileDialog
-            {
-                IsFolderPicker = true,
-                EnsurePathExists = false,
-                EnsureFileExists = false,
-                EnsureValidNames = false,
-            };
-
-            if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                LoadOPLFolder(folderDialog.FileName, true);
-                
-                if (!loadedOPLStructure.FolderExists)
-                {
-                    MessageBox.Show("OPL folder creation failed");
-                }
-                else if (loadedOPLStructure.MissingFolders)
-                {
-                    MessageBox.Show("OPL folder created but folders are missing");
-                }
-                else
-                {
-                    MessageBox.Show("OPL folder successfully created");
-                }
-            }
-        }
-
-        private void OpenOPLFolderButton_Click(object sender, EventArgs e)
-        {
-            Process.Start(loadedOPLStructure.RootFolder);
-        }
+        #endregion
     }
 }
