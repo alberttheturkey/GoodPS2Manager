@@ -165,6 +165,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArtDownload_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ArtDownload_Form.Designer.cs">
+      <DependentUpon>ArtDownload_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="CopyDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -174,6 +180,7 @@
     <Compile Include="DiscContents.cs" />
     <Compile Include="IDiscImage.cs" />
     <Compile Include="CustomExceptions.cs" />
+    <Compile Include="ImageDownloader.cs" />
     <Compile Include="OPLFolderStructure.cs" />
     <Compile Include="Preferences.cs" />
     <Compile Include="Preferences_Form.cs">
@@ -190,6 +197,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ArtDownload_Form.resx">
+      <DependentUpon>ArtDownload_Form.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CopyDialog.resx">
       <DependentUpon>CopyDialog.cs</DependentUpon>
     </EmbeddedResource>
