@@ -144,6 +144,11 @@ namespace GoodPS2Manager
             SetSidebarLocation(Sidebar.SidebarLocation.Left, hideToolStripMenuItem.Checked);
         }
 
+        private void RecentFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadOPLFolder(((ToolStripMenuItem)sender).Text);
+        }
+
         #endregion
 
         #endregion
@@ -186,6 +191,15 @@ namespace GoodPS2Manager
                 addGamesToolStripMenuItem.Enabled = true;
                 OpenOPLFolderButton.Enabled = true;
                 refreshOPLFolderToolStripMenuItem.Enabled = true;
+                
+                // Make sure we're not making an infinitely large "RecentFolders" list
+                currentPreferences.RecentFolders = currentPreferences.RecentFolders.Distinct().ToList();
+                if (currentPreferences.RecentFolders.Any(x => x == loadedOPLStructure.RootFolder))
+                {
+                    currentPreferences.RecentFolders.Add(loadedOPLStructure.RootFolder);
+                }
+
+                SetupInterfaceForPreferences(currentPreferences);
             }
             catch (Exception e)
             {
@@ -216,11 +230,19 @@ namespace GoodPS2Manager
 
         private void SetupInterfaceForPreferences(Preferences currentPreferences)
         {
+            // Setup our sidebar
             var sidebar = currentPreferences.Sidebar;
             SetSidebarLocation(sidebar.Location, sidebar.Hidden);
 
             StatusStrip.Visible = currentPreferences.ShowStatusBar;
             ShowStatusBarMenuItem.Checked = currentPreferences.ShowStatusBar;
+
+            // Clear then populate our recent folders
+            recentOPLFolderToolStripMenuItem.DropDownItems.Clear();
+            foreach (var folder in currentPreferences.RecentFolders.Distinct())
+            {
+                recentOPLFolderToolStripMenuItem.DropDownItems.Add(folder,null, RecentFolderToolStripMenuItem_Click);
+            }
         }
 
         private void SetSidebarLocation(Sidebar.SidebarLocation location, bool hidden)

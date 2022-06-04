@@ -92,7 +92,7 @@
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
             this.MenuStrip.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.MenuStrip.Size = new System.Drawing.Size(2443, 40);
+            this.MenuStrip.Size = new System.Drawing.Size(2443, 42);
             this.MenuStrip.TabIndex = 0;
             this.MenuStrip.Text = "MenuStrip";
             // 
@@ -108,7 +108,7 @@
             this.preferencesToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(71, 36);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(71, 38);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // createOPLFolderToolStripMenuItem
@@ -129,7 +129,7 @@
             // 
             this.recentOPLFolderToolStripMenuItem.Name = "recentOPLFolderToolStripMenuItem";
             this.recentOPLFolderToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
-            this.recentOPLFolderToolStripMenuItem.Text = "Recent OPL Folder *";
+            this.recentOPLFolderToolStripMenuItem.Text = "Recent Folders";
             // 
             // toolStripSeparator1
             // 
@@ -172,7 +172,7 @@
             this.toolStripSeparator4,
             this.artDownloaderToolStripMenuItem});
             this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
-            this.toolToolStripMenuItem.Size = new System.Drawing.Size(89, 36);
+            this.toolToolStripMenuItem.Size = new System.Drawing.Size(89, 38);
             this.toolToolStripMenuItem.Text = "Tools";
             // 
             // refreshOPLFolderToolStripMenuItem
@@ -219,7 +219,7 @@
             this.ShowStatusBarMenuItem,
             this.sidebarToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(85, 36);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(85, 38);
             this.viewToolStripMenuItem.Text = "View";
             // 
             // openCopyProgressDialogToolStripMenuItem
@@ -285,7 +285,7 @@
             this.checkForUpdatesToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(84, 36);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(84, 38);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // gitHubToolStripMenuItem
@@ -365,7 +365,7 @@
             this.GamesListView.Location = new System.Drawing.Point(4, 4);
             this.GamesListView.Margin = new System.Windows.Forms.Padding(4);
             this.GamesListView.Name = "GamesListView";
-            this.GamesListView.Size = new System.Drawing.Size(2030, 1112);
+            this.GamesListView.Size = new System.Drawing.Size(2030, 1110);
             this.GamesListView.TabIndex = 3;
             this.GamesListView.UseCompatibleStateImageBehavior = false;
             this.GamesListView.View = System.Windows.Forms.View.Details;
@@ -416,9 +416,9 @@
             // 
             this.GameListPanel.Controls.Add(this.GamesListView);
             this.GameListPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.GameListPanel.Location = new System.Drawing.Point(405, 40);
+            this.GameListPanel.Location = new System.Drawing.Point(405, 42);
             this.GameListPanel.Name = "GameListPanel";
-            this.GameListPanel.Size = new System.Drawing.Size(2038, 1120);
+            this.GameListPanel.Size = new System.Drawing.Size(2038, 1118);
             this.GameListPanel.TabIndex = 4;
             // 
             // SidebarPanel
@@ -426,19 +426,19 @@
             this.SidebarPanel.Controls.Add(this.OpenOPLFolderButton);
             this.SidebarPanel.Controls.Add(this.OPLStructureLabel);
             this.SidebarPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.SidebarPanel.Location = new System.Drawing.Point(0, 40);
+            this.SidebarPanel.Location = new System.Drawing.Point(0, 42);
             this.SidebarPanel.MinimumSize = new System.Drawing.Size(400, 0);
             this.SidebarPanel.Name = "SidebarPanel";
-            this.SidebarPanel.Size = new System.Drawing.Size(400, 1120);
+            this.SidebarPanel.Size = new System.Drawing.Size(400, 1118);
             this.SidebarPanel.TabIndex = 5;
             this.SidebarPanel.Visible = false;
             // 
             // MainInterfaceSplitter
             // 
             this.MainInterfaceSplitter.BackColor = System.Drawing.SystemColors.Control;
-            this.MainInterfaceSplitter.Location = new System.Drawing.Point(400, 40);
+            this.MainInterfaceSplitter.Location = new System.Drawing.Point(400, 42);
             this.MainInterfaceSplitter.Name = "MainInterfaceSplitter";
-            this.MainInterfaceSplitter.Size = new System.Drawing.Size(5, 1120);
+            this.MainInterfaceSplitter.Size = new System.Drawing.Size(5, 1118);
             this.MainInterfaceSplitter.TabIndex = 6;
             this.MainInterfaceSplitter.TabStop = false;
             this.MainInterfaceSplitter.Visible = false;

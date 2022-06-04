@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 
 namespace GoodPS2Manager
@@ -12,6 +13,7 @@ namespace GoodPS2Manager
 
         public Sidebar Sidebar { get; set; } = new Sidebar();
         public bool ShowStatusBar { get; set; } = true;
+        public List<string> RecentFolders { get; set; } = new List<string>();
 
         public Preferences()
         {
