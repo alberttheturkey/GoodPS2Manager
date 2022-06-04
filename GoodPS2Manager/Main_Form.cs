@@ -85,8 +85,8 @@ namespace GoodPS2Manager
             }
         }
         private void refreshOPLFolderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadOPLFolder(currentPreferences.DefaultOPLPath);
+        {            
+            LoadOPLFolder(loadedOPLStructure.RootFolder);
         }
 
         private void addGamesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -184,6 +184,8 @@ namespace GoodPS2Manager
                 OPLStructureLabel.Text = loadedOPLStructure.ToString();
                 FolderStatusLabel.Text = $"Current Folder: {loadedOPLStructure.RootFolder}";
                 addGamesToolStripMenuItem.Enabled = true;
+                OpenOPLFolderButton.Enabled = true;
+                refreshOPLFolderToolStripMenuItem.Enabled = true;
             }
             catch (Exception e)
             {
