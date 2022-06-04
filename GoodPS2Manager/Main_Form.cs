@@ -17,6 +17,8 @@ namespace GoodPS2Manager
         public List<CopyModel> copyJobs = new List<CopyModel>();
         public ImageDownloader imageDownloader;
 
+        public int leftHandIndex, rightHandIndex;
+
         public GoodPS2Manger_Main_Form()
         {
             InitializeComponent();
@@ -24,10 +26,15 @@ namespace GoodPS2Manager
         #region Event Handlers
         private void GoodPS2Manger_Main_Form_Load(object sender, EventArgs e)
         {
+            leftHandIndex = Controls.GetChildIndex(SidebarPanel);
+            rightHandIndex = Controls.GetChildIndex(GameListPanel);
+
             // Load in our title text and saved preferences
             Text = $"Good PS2 Manager V{Assembly.GetExecutingAssembly().GetName().Version.ToString(2)}";
-            currentPreferences = Properties.Settings.Default.Preferences;
+            currentPreferences = Properties.Settings.Default.Preferences ?? currentPreferences;
             
+            SetupInterfaceForPreferences(currentPreferences);
+
             // only load OPL folder on startup
             if (currentPreferences != null && currentPreferences.LoadOPLFolderOnStartup)
             {
@@ -35,20 +42,26 @@ namespace GoodPS2Manager
             }
         }
 
-        private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Preferences_Form preferenceForm = new Preferences_Form(currentPreferences);
-            var preferencesResult = preferenceForm.ShowDialog();
-            if(preferencesResult == DialogResult.OK)
-            {
-                currentPreferences = preferenceForm.pendingPreferences;
-            }
-        }
-
         private void GoodPS2Manger_Main_Form_FormClosing(object sender, FormClosingEventArgs e)
         {
             Properties.Settings.Default.Preferences = currentPreferences;
             Properties.Settings.Default.Save();
+        }
+
+        private void OpenOPLFolderButton_Click(object sender, EventArgs e)
+        {
+            Process.Start(loadedOPLStructure.RootFolder);
+        }
+
+        #region Menu Events
+        private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Preferences_Form preferenceForm = new Preferences_Form(currentPreferences);
+            var preferencesResult = preferenceForm.ShowDialog();
+            if (preferencesResult == DialogResult.OK)
+            {
+                currentPreferences = preferenceForm.pendingPreferences;
+            }
         }
 
         private void openOPLFolderToolStripMenuItem_Click(object sender, EventArgs e)
@@ -74,12 +87,6 @@ namespace GoodPS2Manager
             var copyDialog = new CopyDialog(loadedOPLStructure, MainProgressBar, ProgressPercentageLabel, copyJobs, HandleProgress);
             copyDialog.ShowDialog();
         }
-
-        private void OpenOPLFolderButton_Click(object sender, EventArgs e)
-        {
-            Process.Start(loadedOPLStructure.RootFolder);
-        }
-
         private void artDownloaderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var copyDialog = new ArtDownload_Form(loadedOPLStructure, imageDownloader);
@@ -114,6 +121,23 @@ namespace GoodPS2Manager
                 }
             }
         }
+
+        private void rightHandSideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetSidebarLocation(Sidebar.SidebarLocation.Right, hideToolStripMenuItem.Checked);
+        }
+
+        private void hideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetSidebarLocation(rightHandSideToolStripMenuItem.Checked ? Sidebar.SidebarLocation.Right : Sidebar.SidebarLocation.Left, hideToolStripMenuItem.Checked);
+        }
+
+        private void leftHandSideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetSidebarLocation(Sidebar.SidebarLocation.Left, hideToolStripMenuItem.Checked);
+        }
+
+        #endregion
 
         #endregion
 
@@ -180,6 +204,48 @@ namespace GoodPS2Manager
                 );
             }
         }
+
+        private void SetupInterfaceForPreferences(Preferences currentPreferences)
+        {
+            var sidebar = currentPreferences.Sidebar;
+
+            SetSidebarLocation(sidebar.Location, sidebar.Hidden);
+        }
+
+        private void SetSidebarLocation(Sidebar.SidebarLocation location, bool hidden)
+        {
+            // Set the visibility of the sidebar and it's splitter
+            SidebarPanel.Visible = !hidden;
+            MainInterfaceSplitter.Visible = !hidden;
+
+            // Set the checkboxes on the menu
+            hideToolStripMenuItem.Checked = hidden;
+            rightHandSideToolStripMenuItem.Checked = location == Sidebar.SidebarLocation.Right;
+            leftHandSideToolStripMenuItem.Checked = location == Sidebar.SidebarLocation.Left;
+
+            // Set sidebar position according to location specified, if hidden is set then
+            // sidebar needs to be in the left hand side to hide, this is reset to the right
+            // side if hidden is set false and the sidebar location is on the right
+            if (hidden || location == Sidebar.SidebarLocation.Left)
+            {
+                Controls.SetChildIndex(SidebarPanel, leftHandIndex);
+                Controls.SetChildIndex(GameListPanel, rightHandIndex);
+                SidebarPanel.Dock = DockStyle.Left;
+                GameListPanel.Dock = DockStyle.Fill;
+            }
+            else
+            {
+                Controls.SetChildIndex(SidebarPanel, rightHandIndex);
+                Controls.SetChildIndex(GameListPanel, leftHandIndex);
+                SidebarPanel.Dock = DockStyle.Fill;
+                GameListPanel.Dock = DockStyle.Left;
+            }
+
+            // Save the preference so that when the user closes and re-opens the program it remembers the position
+            currentPreferences.Sidebar.Location = location;
+            currentPreferences.Sidebar.Hidden = hidden;
+        }
+
         #endregion
 
         #region Progress Methods

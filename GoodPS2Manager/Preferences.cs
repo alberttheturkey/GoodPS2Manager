@@ -10,6 +10,8 @@ namespace GoodPS2Manager
         public bool LoadOPLFolderOnStartup { get; set; } = false;
         public bool CheckOPLFolderOnLoad { get; set; } = true;
 
+        public Sidebar Sidebar { get; set; } = new Sidebar();
+
         public Preferences()
         {
 
@@ -20,4 +22,12 @@ namespace GoodPS2Manager
             return Path.IsPathRooted(DefaultOPLPath);
         }
     }
+
+    public class Sidebar { 
+        public enum SidebarLocation { Left, Right };
+        public SidebarLocation Location { get; set; } = SidebarLocation.Left;
+
+        public bool Hidden { get; set; } = false;
+    }
+
 }
