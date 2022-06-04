@@ -54,6 +54,13 @@ namespace GoodPS2Manager
         }
 
         #region Menu Events
+        private void ShowStatusBarMenuItem_Click(object sender, EventArgs e)
+        {
+            var isChecked = ((ToolStripMenuItem)sender).Checked;
+            StatusStrip.Visible = isChecked;
+            currentPreferences.ShowStatusBar = isChecked;
+        }
+
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Preferences_Form preferenceForm = new Preferences_Form(currentPreferences);
@@ -208,8 +215,10 @@ namespace GoodPS2Manager
         private void SetupInterfaceForPreferences(Preferences currentPreferences)
         {
             var sidebar = currentPreferences.Sidebar;
-
             SetSidebarLocation(sidebar.Location, sidebar.Hidden);
+
+            StatusStrip.Visible = currentPreferences.ShowStatusBar;
+            ShowStatusBarMenuItem.Checked = currentPreferences.ShowStatusBar;
         }
 
         private void SetSidebarLocation(Sidebar.SidebarLocation location, bool hidden)

@@ -11,6 +11,7 @@ namespace GoodPS2Manager
         public bool CheckOPLFolderOnLoad { get; set; } = true;
 
         public Sidebar Sidebar { get; set; } = new Sidebar();
+        public bool ShowStatusBar { get; set; } = true;
 
         public Preferences()
         {

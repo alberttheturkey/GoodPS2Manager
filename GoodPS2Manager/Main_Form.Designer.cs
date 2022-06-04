@@ -48,7 +48,7 @@
             this.artDownloaderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openCopyProgressDialogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ShowStatusBarMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sidebarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.leftHandSideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rightHandSideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,6 +82,7 @@
             // 
             // MenuStrip
             // 
+            this.MenuStrip.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.MenuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
@@ -214,7 +215,7 @@
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openCopyProgressDialogToolStripMenuItem,
-            this.toolStripMenuItem1,
+            this.ShowStatusBarMenuItem,
             this.sidebarToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(85, 38);
@@ -226,12 +227,15 @@
             this.openCopyProgressDialogToolStripMenuItem.Size = new System.Drawing.Size(441, 44);
             this.openCopyProgressDialogToolStripMenuItem.Text = "Open Copy Progress Dialog";
             // 
-            // toolStripMenuItem1
+            // ShowStatusBarMenuItem
             // 
-            this.toolStripMenuItem1.CheckOnClick = true;
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(441, 44);
-            this.toolStripMenuItem1.Text = "Show Status Bar *";
+            this.ShowStatusBarMenuItem.Checked = true;
+            this.ShowStatusBarMenuItem.CheckOnClick = true;
+            this.ShowStatusBarMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ShowStatusBarMenuItem.Name = "ShowStatusBarMenuItem";
+            this.ShowStatusBarMenuItem.Size = new System.Drawing.Size(441, 44);
+            this.ShowStatusBarMenuItem.Text = "Show Status Bar";
+            this.ShowStatusBarMenuItem.Click += new System.EventHandler(this.ShowStatusBarMenuItem_Click);
             // 
             // sidebarToolStripMenuItem
             // 
@@ -504,7 +508,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem artDownloaderToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem ShowStatusBarMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sidebarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem leftHandSideToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rightHandSideToolStripMenuItem;
